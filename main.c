@@ -14,7 +14,7 @@
 
 void    *routine()
 {
-    printf("Philo is created.");
+    printf("Philo is created.\n");
     return (NULL);
 }
 
@@ -24,7 +24,8 @@ int	main(int argc, char **argv)
     int         num_philos;
     int         i;
     
-    num_philos = atoi(argv[0]);
+    (void) argc;
+    num_philos = atoi(argv[1]);
     philosophers = (pthread_t*) malloc (sizeof(pthread_t));
     if (philosophers == NULL)
         return (1);
@@ -37,13 +38,15 @@ int	main(int argc, char **argv)
             return (1);
         }
         printf("Thread %d has started\n", i);
+        i++;
     }
+    i = 0;
     while (i < num_philos)
     {
         if (pthread_join(philosophers[i], NULL) != 0)
             return (1);
         printf("Thread %d has finished execution\n", i);
+        i++;
     }
-    (void) argc;
 	return (0);
 }
