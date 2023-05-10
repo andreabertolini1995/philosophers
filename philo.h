@@ -18,4 +18,11 @@
 # include <unistd.h>
 # include <pthread.h>
 
+typedef struct s_philo
+{
+	int				number;
+    pthread_t       thread;
+	struct s_philo  *next;  // this can be the philosophers sitting next
+}	t_philo;
+
 #endif
