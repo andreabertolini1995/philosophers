@@ -47,4 +47,13 @@ void    philo_die(t_philo philo);
 // Utils
 double  get_timestamp();
 
+//Circular list utils
+t_philo	*last_philo(t_philo *lst);
+t_philo	*new_philo(int philo_number);
+void	add_philo(t_philo **lst, t_philo *new);
+int		get_list_size(t_philo *lst);
+
+// Routine
+void    *routine();
+
 #endif

@@ -18,30 +18,22 @@ void    *routine()
     return (NULL);
 }
 
-t_philo *initialize_philos(int num_philos)
+static void    fill_philos_list(t_philo *philos_list, int num_philos)
 {
-    t_philo *philos;
-    int     i;
+    int i;
 
-    philos = (t_philo*) malloc (sizeof(t_philo) * num_philos);
-    if (philos == NULL)
-        return (NULL);
-    i = 0;
+    i = 1;
     while (i < num_philos)
-    {
-        if (pthread_create(&philos[i].thread, NULL, &routine, NULL) != 0)
-            perror("Failed to create thread.\n");
-        philos[i].number = i + 1;
-        printf("Thread %d has started\n", i);
-        i++;
-    }
-    return (philos);
+	{
+		add_philo(&philos_list, new_philo(i + 1));
+		i++;
+	}
+    last_philo(philos_list)->next = philos_list;
 }
-
 
 int	main(int argc, char **argv)
 {
-    t_philo *philos;
+    t_philo *philos_list;
     int     num_philos;
     int     time_to_die;
     int     time_to_eat;
@@ -56,11 +48,13 @@ int	main(int argc, char **argv)
     time_to_die = atoi(argv[2]);
     time_to_eat = atoi(argv[3]);
     time_to_sleep = atoi(argv[4]);
-    philos = initialize_philos(num_philos);
-    
-    philo_eat(philos[1]);
-    philo_think(philos[3]);
-    philo_sleep(philos[2]);
+
+    philos_list = new_philo(1);
+    fill_philos_list(philos_list, num_philos);
+
+    // philo_eat(philos[1]);
+    // philo_think(philos[3]);
+    // philo_sleep(philos[2]);
     // philosophers = (pthread_t*) malloc (sizeof(pthread_t));
     // if (philosophers == NULL)
     //     return (1);
