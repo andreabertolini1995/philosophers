@@ -12,50 +12,61 @@
 
 #include "philo.h"
 
-void    philo_eat(t_philo philo)
+void    philo_eat(t_philo *philo)
 {
     double  current_timestamp;
     
-    if (philo.forks == 2)
+    if (philo->left_fork == taken && philo->right_fork == taken)
     {
-        philo.state.eating = true;
+        philo->state = eating;
         current_timestamp = get_timestamp();
-        printf("%f %d is eating\n", current_timestamp, philo.number);
+        printf("%f %d is eating\n", current_timestamp, philo->number);
     }
 }
 
-void    philo_sleep(t_philo philo)
+void    philo_sleep(t_philo *philo)
 {
     double  current_timestamp;
     
-    philo.state.sleeping = true;
+    philo->state = sleeping;
     current_timestamp = get_timestamp();
-    printf("%f %d is sleeping\n", current_timestamp, philo.number);
+    printf("%f %d is sleeping\n", current_timestamp, philo->number);
 }
 
-void    philo_think(t_philo philo)
+void    philo_think(t_philo *philo)
 {
     double  current_timestamp;
     
-    philo.state.thinking = true;
+    philo->state = thinking;
     current_timestamp = get_timestamp();
-    printf("%f %d is thinking\n", current_timestamp, philo.number);
+    printf("%f %d is thinking\n", current_timestamp, philo->number);
 }
 
-void    philo_fork(t_philo philo)
-{
-    double  current_timestamp;
-    
-    philo.forks++;
-    current_timestamp = get_timestamp();
-    printf("%f %d has taken a fork\n", current_timestamp, philo.number);
+void    philo_take_fork(t_philo *philo, char *side)
+{    
+    if (!ft_strncmp(side, "left", ft_strlen(side)))
+    {
+        if (philo->next->right_fork == available)
+        {
+            philo->left_fork = taken;
+            printf("%f %d has taken a fork\n", get_timestamp(), philo->number);
+        }
+    }
+    else
+    {
+        if (philo->next->left_fork == available)
+        {
+            philo->right_fork = taken;
+            printf("%f %d has taken a fork\n", get_timestamp(), philo->number);
+        }
+    }
 }
 
-void    philo_die(t_philo philo)
+void    philo_die(t_philo *philo)
 {
     double  current_timestamp;
     
-    philo.state.death = true;
+    philo->state = dead;
     current_timestamp = get_timestamp();
-    printf("%f %d died\n", current_timestamp, philo.number);
+    printf("%f %d died\n", current_timestamp, philo->number);
 }

@@ -33,13 +33,16 @@ t_philo	*new_philo(int philo_number)
 	tmp = malloc (sizeof(t_philo));
 	if (tmp == NULL)
 		return (NULL);
-    if (pthread_create(&tmp->thread, NULL, &routine, NULL) != 0)
+	tmp->number = philo_number;
+	tmp->next = NULL;
+	tmp->left_fork = available;
+	tmp->right_fork = available;
+	pthread_mutex_init(&tmp->mutex, NULL);
+	if (pthread_create(&tmp->thread, NULL, &routine, tmp) != 0)
 	{
 		perror("Failed to create thread.\n");
 	}
-	tmp->number = philo_number;
-    printf("Thread %d has started\n", philo_number);
-	tmp->next = NULL;
+	//printf("Thread %d has started\n", philo_number);
 	return (tmp);
 }
 

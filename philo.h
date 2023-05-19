@@ -20,32 +20,37 @@
 # include <sys/time.h>
 # include <stdbool.h>
 
-typedef struct s_philo_state
+typedef enum s_philo_state
 {
-	bool	eating;
-	bool	sleeping;
-	bool	thinking;
-	bool	death;
+	eating,
+	sleeping,
+	thinking,
+	dead
 }	t_philo_state;
+
+typedef enum s_fork
+{
+	taken,
+	available
+}	t_fork;
 
 typedef struct s_philo
 {
+	pthread_t       thread;
 	int				number;
-    pthread_t       thread;
-	struct s_philo  *next;  // this can be the philosophers sitting next
-	int				forks;
+	pthread_mutex_t mutex;
+	t_fork			right_fork;
+	t_fork			left_fork;
 	t_philo_state	state;
+	struct s_philo  *next;
 }	t_philo;
 
 // Philo actions
-void    philo_eat(t_philo philo);
-void    philo_sleep(t_philo philo);
-void    philo_think(t_philo philo);
-void    philo_fork(t_philo philo);
-void    philo_die(t_philo philo);
-
-// Utils
-double  get_timestamp();
+void    philo_eat(t_philo *philo);
+void    philo_sleep(t_philo *philo);
+void    philo_think(t_philo *philo);
+void    philo_take_fork(t_philo *philo, char *side);
+void    philo_die(t_philo *philo);
 
 //Circular list utils
 t_philo	*last_philo(t_philo *lst);
@@ -54,6 +59,11 @@ void	add_philo(t_philo **lst, t_philo *new);
 int		get_list_size(t_philo *lst);
 
 // Routine
-void    *routine();
+void    *routine(void *arg);
+
+// Utils
+double  get_timestamp();
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlen(const char *str);
 
 #endif
