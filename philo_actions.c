@@ -16,9 +16,7 @@ void    philo_eat(t_philo philo)
 {
     double  current_timestamp;
     
-    philo.left_fork = true;
-    philo.right_fork = true;
-    if (philo.left_fork == true && philo.right_fork == true)
+    if (philo.forks == 2)
     {
         philo.state.eating = true;
         current_timestamp = get_timestamp();
@@ -42,4 +40,22 @@ void    philo_think(t_philo philo)
     philo.state.thinking = true;
     current_timestamp = get_timestamp();
     printf("%f %d is thinking\n", current_timestamp, philo.number);
+}
+
+void    philo_fork(t_philo philo)
+{
+    double  current_timestamp;
+    
+    philo.forks++;
+    current_timestamp = get_timestamp();
+    printf("%f %d has taken a fork\n", current_timestamp, philo.number);
+}
+
+void    philo_die(t_philo philo)
+{
+    double  current_timestamp;
+    
+    philo.state.death = true;
+    current_timestamp = get_timestamp();
+    printf("%f %d died\n", current_timestamp, philo.number);
 }

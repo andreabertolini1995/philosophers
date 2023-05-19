@@ -25,6 +25,7 @@ typedef struct s_philo_state
 	bool	eating;
 	bool	sleeping;
 	bool	thinking;
+	bool	death;
 }	t_philo_state;
 
 typedef struct s_philo
@@ -32,8 +33,7 @@ typedef struct s_philo
 	int				number;
     pthread_t       thread;
 	struct s_philo  *next;  // this can be the philosophers sitting next
-	bool			left_fork;
-	bool			right_fork;
+	int				forks;
 	t_philo_state	state;
 }	t_philo;
 
@@ -41,6 +41,8 @@ typedef struct s_philo
 void    philo_eat(t_philo philo);
 void    philo_sleep(t_philo philo);
 void    philo_think(t_philo philo);
+void    philo_fork(t_philo philo);
+void    philo_die(t_philo philo);
 
 // Utils
 double  get_timestamp();
