@@ -10,39 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "philo.h"
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <pthread.h>
-# include <sys/time.h>
-# include <stdbool.h>
-
-typedef struct s_philo_state
+double  get_timestamp()
 {
-	bool	eating;
-	bool	sleeping;
-	bool	thinking;
-}	t_philo_state;
+    struct timeval  current_time;
+    double          time_in_ms;
 
-typedef struct s_philo
-{
-	int				number;
-    pthread_t       thread;
-	struct s_philo  *next;  // this can be the philosophers sitting next
-	bool			left_fork;
-	bool			right_fork;
-	t_philo_state	state;
-}	t_philo;
-
-// Philo actions
-void    philo_eat(t_philo philo);
-void    philo_sleep(t_philo philo);
-void    philo_think(t_philo philo);
-
-// Utils
-double  get_timestamp();
-
-#endif
+    gettimeofday(&current_time, NULL);
+    time_in_ms = (current_time.tv_sec) * 1000 + (current_time.tv_usec) / 1000;
+    // printf("seconds : %f\n", time_in_ms);
+    return (time_in_ms);
+}

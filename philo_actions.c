@@ -10,39 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include "philo.h"
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <pthread.h>
-# include <sys/time.h>
-# include <stdbool.h>
-
-typedef struct s_philo_state
+void    philo_eat(t_philo philo)
 {
-	bool	eating;
-	bool	sleeping;
-	bool	thinking;
-}	t_philo_state;
+    double  current_timestamp;
+    
+    philo.left_fork = true;
+    philo.right_fork = true;
+    if (philo.left_fork == true && philo.right_fork == true)
+    {
+        philo.state.eating = true;
+        current_timestamp = get_timestamp();
+        printf("%f %d is eating\n", current_timestamp, philo.number);
+    }
+}
 
-typedef struct s_philo
+void    philo_sleep(t_philo philo)
 {
-	int				number;
-    pthread_t       thread;
-	struct s_philo  *next;  // this can be the philosophers sitting next
-	bool			left_fork;
-	bool			right_fork;
-	t_philo_state	state;
-}	t_philo;
+    double  current_timestamp;
+    
+    philo.state.sleeping = true;
+    current_timestamp = get_timestamp();
+    printf("%f %d is sleeping\n", current_timestamp, philo.number);
+}
 
-// Philo actions
-void    philo_eat(t_philo philo);
-void    philo_sleep(t_philo philo);
-void    philo_think(t_philo philo);
-
-// Utils
-double  get_timestamp();
-
-#endif
+void    philo_think(t_philo philo)
+{
+    double  current_timestamp;
+    
+    philo.state.thinking = true;
+    current_timestamp = get_timestamp();
+    printf("%f %d is thinking\n", current_timestamp, philo.number);
+}

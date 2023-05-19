@@ -38,12 +38,29 @@ t_philo *initialize_philos(int num_philos)
     return (philos);
 }
 
+
 int	main(int argc, char **argv)
 {
     t_philo *philos;
+    int     num_philos;
+    int     time_to_die;
+    int     time_to_eat;
+    int     time_to_sleep;
     
-    (void) argc;
-    philos = initialize_philos(atoi(argv[1]));
+    if (argc > 5)
+    {
+        printf("Too many arguments provided.\n");
+        return (1);
+    }
+    num_philos = atoi(argv[1]);
+    time_to_die = atoi(argv[2]);
+    time_to_eat = atoi(argv[3]);
+    time_to_sleep = atoi(argv[4]);
+    philos = initialize_philos(num_philos);
+    
+    philo_eat(philos[1]);
+    philo_think(philos[3]);
+    philo_sleep(philos[2]);
     // philosophers = (pthread_t*) malloc (sizeof(pthread_t));
     // if (philosophers == NULL)
     //     return (1);
