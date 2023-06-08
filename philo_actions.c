@@ -22,6 +22,8 @@ void    philo_eat(t_philo *philo)
         current_timestamp = get_timestamp();
         printf("%f %d is eating\n", current_timestamp, philo->number);
     }
+    usleep(philo->time_to_eat/1000);
+    philo->time_last_meal = get_timestamp();
 }
 
 void    philo_sleep(t_philo *philo)
@@ -31,6 +33,7 @@ void    philo_sleep(t_philo *philo)
     philo->state = sleeping;
     current_timestamp = get_timestamp();
     printf("%f %d is sleeping\n", current_timestamp, philo->number);
+    usleep(philo->time_to_sleep/1000);
 }
 
 void    philo_think(t_philo *philo)
@@ -46,7 +49,7 @@ void    philo_take_fork(t_philo *philo, char *side)
 {    
     if (!ft_strncmp(side, "left", ft_strlen(side)))
     {
-        if (philo->next->right_fork == available)
+        if (philo->next->right_fork == available) // to change with mutexes
         {
             philo->left_fork = taken;
             printf("%f %d has taken a fork\n", get_timestamp(), philo->number);

@@ -26,7 +26,8 @@ t_philo	*last_philo(t_philo *lst)
 	return (last_node);
 }
 
-t_philo	*new_philo(int philo_number)
+t_philo	*new_philo(int philo_number, double time_to_die,
+				double time_to_eat, double time_to_sleep)
 {
 	t_philo	*tmp;
 
@@ -37,6 +38,9 @@ t_philo	*new_philo(int philo_number)
 	tmp->next = NULL;
 	tmp->left_fork = available;
 	tmp->right_fork = available;
+	tmp->time_to_die = time_to_die;
+	tmp->time_to_eat = time_to_eat;
+	tmp->time_to_sleep = time_to_sleep;
 	pthread_mutex_init(&tmp->mutex, NULL);
 	if (pthread_create(&tmp->thread, NULL, &routine, tmp) != 0)
 	{

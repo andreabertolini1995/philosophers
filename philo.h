@@ -42,6 +42,10 @@ typedef struct s_philo
 	t_fork			right_fork;
 	t_fork			left_fork;
 	t_philo_state	state;
+	double			time_to_die;
+	double			time_to_eat;
+	double			time_to_sleep;
+	double			time_last_meal;
 	struct s_philo  *next;
 }	t_philo;
 
@@ -54,7 +58,8 @@ void    philo_die(t_philo *philo);
 
 //Circular list utils
 t_philo	*last_philo(t_philo *lst);
-t_philo	*new_philo(int philo_number);
+t_philo	*new_philo(int philo_number, double time_to_die,
+		double time_to_eat, double time_to_sleep);
 void	add_philo(t_philo **lst, t_philo *new);
 int		get_list_size(t_philo *lst);
 

@@ -16,14 +16,17 @@ void    *routine(void *arg)
 {
     t_philo *philo;
 
-    philo = (t_philo*)arg;
-    pthread_mutex_lock(&philo->mutex);
-    while (42)
+    philo = (t_philo*) arg;
+    pthread_mutex_lock(&philo->mutex); // mutexes have to be used for the forks - which are the shared resources in the problem
+    while (42) // infinite loop 
     {
-        // philo_take_fork(philo, "left");
-        // philo_eat(philo);
+        philo_take_fork(philo, "left");
+        philo_take_fork(philo, "right");
+        philo_eat(philo);
         philo_sleep(philo);
         philo_think(philo);
+        if (get_timestamp() > (philo->time_last_meal + philo->time_to_die))
+            philo_die(philo);
     }
     pthread_mutex_unlock(&philo->mutex);
     return (NULL);
@@ -36,13 +39,14 @@ static void    fill_philos_list(t_philo *philos_list, int num_philos)
     i = 1;
     while (i < num_philos)
 	{
-		add_philo(&philos_list, new_philo(i + 1));
+		add_philo(&philos_list, new_philo(i + 1, philos_list->time_to_die,
+                    philos_list->time_to_eat, philos_list->time_to_sleep));
 		i++;
 	}
     last_philo(philos_list)->next = philos_list;
 }
 
-void    terminate_threads(t_philo *philos_list, int num_philos)
+int    terminate_threads(t_philo *philos_list, int num_philos)
 {
     int i;
 
@@ -54,6 +58,7 @@ void    terminate_threads(t_philo *philos_list, int num_philos)
         printf("Thread %d has finished execution\n", i + 1);
         i++;
     }
+    return (0);
 }
 
 int	main(int argc, char **argv)
@@ -61,9 +66,6 @@ int	main(int argc, char **argv)
     t_philo *philos_list;
     int     num_philos;
     int     num_forks;
-    int     time_to_die;
-    int     time_to_eat;
-    int     time_to_sleep;
     
     if (argc > 5)
     {
@@ -72,11 +74,7 @@ int	main(int argc, char **argv)
     }
     num_philos = atoi(argv[1]);
     num_forks = num_philos;
-    time_to_die = atoi(argv[2]);
-    time_to_eat = atoi(argv[3]);
-    time_to_sleep = atoi(argv[4]);
-
-    philos_list = new_philo(1);
+    philos_list = new_philo(1, atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
     fill_philos_list(philos_list, num_philos);
 	return (0);
 }
@@ -84,6 +82,7 @@ int	main(int argc, char **argv)
 /* 
 Next steps:
 - understand more about routines and mutexes
-- understand how to use the input parameters to make the philos sleeping/eating accordingly
 - make sure that the general approach is correct
+- understand how to simulate forks and how do the philosophers take them?
+- How do I check the general functioning of the algorithm? Are there cases where I know what is supposed to be the final outcome? Also, should it always be the same given the same input or can it be different?
 */
