@@ -17,8 +17,8 @@ void    *routine(void *arg)
     t_philo *philo;
 
     philo = (t_philo*) arg;
-    pthread_mutex_lock(&philo->mutex); // mutexes have to be used for the forks - which are the shared resources in the problem
-    while (42) // infinite loop 
+    pthread_mutex_lock(&philo->mutex);
+    while (42) 
     {
         philo_take_fork(philo, "left");
         philo_take_fork(philo, "right");
@@ -29,12 +29,12 @@ void    *routine(void *arg)
             philo_die(philo);
     }
     pthread_mutex_unlock(&philo->mutex);
-    return (NULL);
 }
 
 static void    fill_philos_list(t_philo *philos_list, int num_philos)
 {
-    int i;
+    int     i;
+    t_philo *last_node;
 
     i = 1;
     while (i < num_philos)
@@ -43,7 +43,9 @@ static void    fill_philos_list(t_philo *philos_list, int num_philos)
                     philos_list->time_to_eat, philos_list->time_to_sleep));
 		i++;
 	}
-    last_philo(philos_list)->next = philos_list;
+    last_node = last_philo(philos_list);
+    last_node->next = philos_list;
+    philos_list->prev = last_node;
 }
 
 int    terminate_threads(t_philo *philos_list, int num_philos)
@@ -61,22 +63,37 @@ int    terminate_threads(t_philo *philos_list, int num_philos)
     return (0);
 }
 
+t_fork *initialize_forks(int num_philos)
+{
+    t_fork*    forks;
+    int     i;
+
+    forks = (t_fork* ) malloc (sizeof(t_fork) * num_philos);
+	if (forks == NULL)
+		return (NULL);
+    i = 0;
+    while (i < num_philos)
+    {
+        forks[i] = available;
+        i++;
+    }
+    return (forks);
+}
+
 int	main(int argc, char **argv)
 {
     t_philo *philos_list;
+    t_fork  *forks;
     int     num_philos;
-    int     num_forks;
     
     if (argc > 5)
-    {
         printf("Too many arguments provided.\n");
-        return (1);
-    }
     num_philos = atoi(argv[1]);
-    num_forks = num_philos;
+    forks = initialize_forks(num_philos);
     philos_list = new_philo(1, atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
     fill_philos_list(philos_list, num_philos);
-	return (0);
+    // pthread_mutex_destroy(&mutex);
+    terminate_threads(philos_list, num_philos);
 }
 
 /* 
@@ -84,5 +101,10 @@ Next steps:
 - understand more about routines and mutexes
 - make sure that the general approach is correct
 - understand how to simulate forks and how do the philosophers take them?
-- How do I check the general functioning of the algorithm? Are there cases where I know what is supposed to be the final outcome? Also, should it always be the same given the same input or can it be different?
+- understand how to finish the simulation
+- How do I check the general functioning of the algorithm? 
+    - Are there cases where I know what is supposed to be the final outcome?
+    - Also, should it always be the same given the same input or can it be different? We can check that, but I doubt it.
+- Do we need a mutex for each philo or just one in general?
+- Currently, philosophers never eat
 */

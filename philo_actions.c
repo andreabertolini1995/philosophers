@@ -16,14 +16,16 @@ void    philo_eat(t_philo *philo)
 {
     double  current_timestamp;
     
+    //if (philo->num_forks == 2)
     if (philo->left_fork == taken && philo->right_fork == taken)
     {
         philo->state = eating;
         current_timestamp = get_timestamp();
         printf("%f %d is eating\n", current_timestamp, philo->number);
     }
-    usleep(philo->time_to_eat/1000);
+    usleep((philo->time_to_eat)/1000);
     philo->time_last_meal = get_timestamp();
+    philo->num_forks = 0;
 }
 
 void    philo_sleep(t_philo *philo)
@@ -33,7 +35,7 @@ void    philo_sleep(t_philo *philo)
     philo->state = sleeping;
     current_timestamp = get_timestamp();
     printf("%f %d is sleeping\n", current_timestamp, philo->number);
-    usleep(philo->time_to_sleep/1000);
+    usleep((philo->time_to_sleep)/1000);
 }
 
 void    philo_think(t_philo *philo)
@@ -49,18 +51,22 @@ void    philo_take_fork(t_philo *philo, char *side)
 {    
     if (!ft_strncmp(side, "left", ft_strlen(side)))
     {
-        if (philo->next->right_fork == available) // to change with mutexes
+        if (philo->left_fork == available)
         {
             philo->left_fork = taken;
-            printf("%f %d has taken a fork\n", get_timestamp(), philo->number);
+            philo->next->right_fork = taken;
+            philo->num_forks++;
+            printf("%f %d has taken its left fork\n", get_timestamp(), philo->number);
         }
     }
     else
     {
-        if (philo->next->left_fork == available)
+        if (philo->right_fork == available)
         {
             philo->right_fork = taken;
-            printf("%f %d has taken a fork\n", get_timestamp(), philo->number);
+            philo->prev->left_fork = taken;
+            philo->num_forks++;
+            printf("%f %d has taken its right fork\n", get_timestamp(), philo->number);
         }
     }
 }

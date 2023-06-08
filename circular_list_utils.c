@@ -31,17 +31,22 @@ t_philo	*new_philo(int philo_number, double time_to_die,
 {
 	t_philo	*tmp;
 
-	tmp = malloc (sizeof(t_philo));
+	tmp = (t_philo*) malloc (sizeof(t_philo));
 	if (tmp == NULL)
 		return (NULL);
 	tmp->number = philo_number;
 	tmp->next = NULL;
+	tmp->prev = NULL;
 	tmp->left_fork = available;
 	tmp->right_fork = available;
+	tmp->num_forks = 0;
 	tmp->time_to_die = time_to_die;
 	tmp->time_to_eat = time_to_eat;
 	tmp->time_to_sleep = time_to_sleep;
-	pthread_mutex_init(&tmp->mutex, NULL);
+	if (pthread_mutex_init(&tmp->mutex, NULL) != 0)
+    {
+        printf("Failed to initialize the mutex.\n");
+    }
 	if (pthread_create(&tmp->thread, NULL, &routine, tmp) != 0)
 	{
 		perror("Failed to create thread.\n");
@@ -63,6 +68,7 @@ void	add_philo(t_philo **lst, t_philo *new)
 	{
 		last_node = last_philo(*lst);
 		last_node->next = new;
+		new->prev = last_node;
 	}
 }
 

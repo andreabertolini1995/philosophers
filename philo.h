@@ -41,12 +41,14 @@ typedef struct s_philo
 	pthread_mutex_t mutex;
 	t_fork			right_fork;
 	t_fork			left_fork;
+	int				num_forks;
 	t_philo_state	state;
 	double			time_to_die;
 	double			time_to_eat;
 	double			time_to_sleep;
 	double			time_last_meal;
 	struct s_philo  *next;
+	struct s_philo	*prev;
 }	t_philo;
 
 // Philo actions
@@ -56,7 +58,7 @@ void    philo_think(t_philo *philo);
 void    philo_take_fork(t_philo *philo, char *side);
 void    philo_die(t_philo *philo);
 
-//Circular list utils
+// Circular list utils
 t_philo	*last_philo(t_philo *lst);
 t_philo	*new_philo(int philo_number, double time_to_die,
 		double time_to_eat, double time_to_sleep);
