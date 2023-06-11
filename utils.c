@@ -12,10 +12,10 @@
 
 #include "philo.h"
 
-double  get_timestamp()
+long int  get_timestamp()
 {
     struct timeval  current_time;
-    double          time_in_ms;
+    long int		time_in_ms;
 
     gettimeofday(&current_time, NULL);
     time_in_ms = (current_time.tv_sec) * 1000 + (current_time.tv_usec) / 1000;

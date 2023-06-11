@@ -69,8 +69,8 @@ int		get_list_size(t_philo *lst);
 void    *routine(void *arg);
 
 // Utils
-double  get_timestamp();
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-size_t	ft_strlen(const char *str);
+long int	get_timestamp();
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t		ft_strlen(const char *str);
 
 #endif
