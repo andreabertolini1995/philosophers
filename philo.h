@@ -43,10 +43,10 @@ typedef struct s_philo
 	t_fork			left_fork;
 	int				num_forks;
 	t_philo_state	state;
-	double			time_to_die;
-	double			time_to_eat;
-	double			time_to_sleep;
-	double			time_last_meal;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				time_last_meal;
 	struct s_philo  *next;
 	struct s_philo	*prev;
 }	t_philo;

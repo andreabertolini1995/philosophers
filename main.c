@@ -12,6 +12,8 @@
 
 #include "philo.h"
 
+long int g_start_time = 0;
+
 void    *routine(void *arg)
 {
     t_philo *philo;
@@ -85,15 +87,20 @@ int	main(int argc, char **argv)
     t_philo *philos_list;
     t_fork  *forks;
     int     num_philos;
-    
+
+    g_start_time = get_timestamp();
     if (argc > 5)
+    {
         printf("Too many arguments provided.\n");
+        return (1);
+    }
     num_philos = atoi(argv[1]);
     forks = initialize_forks(num_philos);
     philos_list = new_philo(1, atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
     fill_philos_list(philos_list, num_philos);
     // pthread_mutex_destroy(&mutex);
     terminate_threads(philos_list, num_philos);
+    return (0);
 }
 
 /* 
