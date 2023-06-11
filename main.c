@@ -28,7 +28,10 @@ void    *routine(void *arg)
         philo_sleep(philo);
         philo_think(philo);
         if (get_timestamp() > (philo->time_last_meal + philo->time_to_die))
+        {
             philo_die(philo);
+            exit(1); // now we exit/terminate the individual routine of each philosopher when they die
+        }
     }
     pthread_mutex_unlock(&philo->mutex);
 }

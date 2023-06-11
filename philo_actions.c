@@ -18,14 +18,13 @@ void    philo_eat(t_philo *philo)
 {
     long int  current_timestamp;
     
-    //if (philo->num_forks == 2)
-    if (philo->left_fork == taken && philo->right_fork == taken)
+    if (philo->num_forks == 2)
     {
         philo->state = eating;
         current_timestamp = get_timestamp();
         printf("%ld %d is eating\n", current_timestamp - g_start_time, philo->number);
     }
-    usleep((philo->time_to_eat)/1000);
+    usleep((philo->time_to_eat) * 1000);
     philo->time_last_meal = get_timestamp();
     philo->num_forks = 0;
 }
@@ -33,20 +32,26 @@ void    philo_eat(t_philo *philo)
 void    philo_sleep(t_philo *philo)
 {
     long int  current_timestamp;
-    
-    philo->state = sleeping;
-    current_timestamp = get_timestamp();
-    printf("%ld %d is sleeping\n", current_timestamp - g_start_time, philo->number);
-    usleep((philo->time_to_sleep)/1000);
+
+    if (philo->state == eating)
+    {
+        philo->state = sleeping;
+        current_timestamp = get_timestamp();
+        printf("%ld %d is sleeping\n", current_timestamp - g_start_time, philo->number);
+        usleep((philo->time_to_sleep) * 1000);
+    }
 }
 
 void    philo_think(t_philo *philo)
 {
     long int  current_timestamp;
     
-    philo->state = thinking;
-    current_timestamp = get_timestamp();
-    printf("%ld %d is thinking\n", current_timestamp - g_start_time, philo->number);
+    if (philo->state == eating)
+    {
+        philo->state = thinking;
+        current_timestamp = get_timestamp();
+        printf("%ld %d is thinking\n", current_timestamp - g_start_time, philo->number);
+    }
 }
 
 void    philo_take_fork(t_philo *philo, char *side)

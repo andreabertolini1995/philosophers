@@ -39,6 +39,7 @@ t_philo	*new_philo(int philo_number, double time_to_die,
 	tmp->prev = NULL;
 	tmp->left_fork = available;
 	tmp->right_fork = available;
+	tmp->state = thinking;
 	tmp->num_forks = 0;
 	tmp->time_to_die = time_to_die;
 	tmp->time_to_eat = time_to_eat;
