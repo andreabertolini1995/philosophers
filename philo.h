@@ -46,7 +46,7 @@ typedef struct s_philo
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				time_last_meal;
+	long int		time_last_meal;
 	struct s_philo  *next;
 	struct s_philo	*prev;
 }	t_philo;
