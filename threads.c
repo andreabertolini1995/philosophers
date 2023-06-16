@@ -12,42 +12,60 @@
 
 #include "philo.h"
 
-long int	get_current_time(void)
+pthread_mutex_t	*create_forks(int num_philos)
 {
-	struct timeval	current_time;
-	long int		time_in_ms;
+	pthread_mutex_t	*forks;
+	int				i;
 
-	gettimeofday(&current_time, NULL);
-	time_in_ms = (current_time.tv_sec) * 1000 + (current_time.tv_usec) / 1000;
-	return (time_in_ms);
-}
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	unsigned int	i;
-	unsigned char	*str1;
-	unsigned char	*str2;
-
-	str1 = (unsigned char *) s1;
-	str2 = (unsigned char *) s2;
+	forks = (pthread_mutex_t *) malloc (sizeof(pthread_mutex_t) * num_philos);
+	if (forks == NULL)
+		return (0);
 	i = 0;
-	while ((str1[i] != '\0' || str2[i] != '\0') && i < n)
+	while (i < num_philos)
 	{
-		if (str1[i] != str2[i])
-			return (str1[i] - str2[i]);
+		pthread_mutex_init(&forks[i], NULL);
 		i++;
 	}
-	return (0);
+	return (forks);
 }
 
-size_t	ft_strlen(const char *str)
+pthread_t	*create_threads(int num_philos, t_philo *philosophers)
 {
-	size_t	count;
+	pthread_t	*threads;
+	int			i;
 
-	if (str == NULL)
+	threads = (pthread_t *) malloc (sizeof(pthread_t) * num_philos);
+	if (threads == NULL)
 		return (0);
-	count = 0;
-	while (str[count] != '\0')
-		count++;
-	return (count);
+	i = 0;
+	while (i < num_philos)
+	{
+		pthread_create(&threads[i], NULL, &routine, (void *)&philosophers[i]);
+		i++;
+	}
+	return (threads);
+}
+
+void	terminate_threads(int num_philos, pthread_t *threads)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_philos)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
+}
+
+void	destroy_mutexes(int num_philos, pthread_mutex_t *forks)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_philos)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		i++;
+	}
 }

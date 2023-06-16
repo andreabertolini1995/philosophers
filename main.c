@@ -12,122 +12,55 @@
 
 #include "philo.h"
 
-long int g_start_time = 0;
-
-void    *routine(void *arg)
+static t_philo	*create_philosophers(int num_philos, pthread_mutex_t *forks,
+									int *times, long int start_time)
 {
-    t_philo *philo;
+	t_philo	*philosophers;
+	int		i;
 
-    philo = (t_philo*) arg;
-    pthread_mutex_lock(&philo->mutex);
-    while (42) 
-    {
-        // Philosopher with odd number start taking the right fork
-        // printf("Philo numer: %d\n", philo->number);
-        if (philo->number % 2 != 0)
-        {
-            philo_take_fork(philo, "right");
-            philo_take_fork(philo, "left");
-        }
-        
-        // Philosophers with even number start taking the left fork
-        else
-        {
-            philo_take_fork(philo, "left");
-            philo_take_fork(philo, "right");
-        }
-        philo_eat(philo);
-        philo_sleep(philo);
-        philo_think(philo);
-        if (get_timestamp() > (philo->time_last_meal + philo->time_to_die)
-            && philo->state != eating) // philosophers don't die while eating
-        {
-            philo_die(philo);
-            pthread_mutex_unlock(&philo->mutex);
-            exit(1); // now we exit/terminate the individual routine of each philosopher when they die
-        }
-        //printf("Philo %d has %d next and %d prev\n", philo->number, philo->next->number, philo->prev->number);
-    }
-    pthread_mutex_unlock(&philo->mutex);
-}
-
-// Not sure if this function should take a double pointer to the list or not
-t_philo    *fill_philos_list(t_philo *philos_list, int num_philos)
-{
-    int     i;
-    t_philo *last_node;
-
-    i = 1;
-    while (i < num_philos)
+	philosophers = (t_philo *) malloc (sizeof(t_philo) * num_philos);
+	if (philosophers == NULL)
+		return (NULL);
+	i = 0;
+	while (i < num_philos)
 	{
-		add_philo(&philos_list, new_philo(i + 1, philos_list->time_to_die,
-                    philos_list->time_to_eat, philos_list->time_to_sleep));
+		philosophers[i].number = i + 1;
+		philosophers[i].start_time = start_time;
+		philosophers[i].time_to_die = times[0];
+		philosophers[i].time_to_eat = times[1];
+		philosophers[i].time_to_sleep = times[2];
+		philosophers[i].left_fork = &forks[i];
+		if (philosophers[i].number == 1)
+			philosophers[i].right_fork = &forks[num_philos - 1];
+		else
+			philosophers[i].right_fork = &forks[i + 1];
 		i++;
 	}
-    last_node = last_philo(philos_list);
-    last_node->next = philos_list;
-    philos_list->prev = last_node;
-    return (philos_list);
-}
-
-int    terminate_threads(t_philo *philos_list, int num_philos)
-{
-    int i;
-
-    i = 0;
-    while (i < num_philos)
-    {
-        if (pthread_join(philos_list->thread, NULL) != 0)
-            return (1);
-        printf("Thread %d has finished execution\n", i + 1);
-        i++;
-    }
-    return (0);
-}
-
-t_fork *initialize_forks(int num_philos)
-{
-    t_fork*    forks;
-    int     i;
-
-    forks = (t_fork* ) malloc (sizeof(t_fork) * num_philos);
-	if (forks == NULL)
-		return (NULL);
-    i = 0;
-    while (i < num_philos)
-    {
-        forks[i] = available;
-        i++;
-    }
-    return (forks);
+	return (philosophers);
 }
 
 int	main(int argc, char **argv)
 {
-    t_philo *philos_list;
-    t_fork  *forks;
-    int     num_philos;
+	int				num_philos;
+	pthread_mutex_t	*forks;
+	pthread_t		*threads;
+	t_philo			*philosophers;
+	int				times[3];
 
-    g_start_time = get_timestamp();
-    if (argc > 5)
-    {
-        printf("Too many arguments provided.\n");
-        return (1);
-    }
-    num_philos = atoi(argv[1]);
-    forks = initialize_forks(num_philos);
-    philos_list = new_philo(1, atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
-    philos_list = fill_philos_list(philos_list, num_philos);
-    
-    // pthread_mutex_destroy(&mutex);
-    terminate_threads(philos_list, num_philos);
-    return (0);
+	if (argc > 5)
+	{
+		printf("Too many arguments provided.\n");
+		return (1);
+	}
+	num_philos = atoi(argv[1]);
+	times[0] = atoi(argv[2]);
+	times[1] = atoi(argv[3]);
+	times[2] = atoi(argv[4]);
+	forks = create_forks(num_philos);
+	philosophers = create_philosophers(num_philos, forks,
+			times, get_current_time());
+	threads = create_threads(num_philos, philosophers);
+	terminate_threads(num_philos, threads);
+	destroy_mutexes(num_philos, forks);
+	return (0);
 }
-
-/* 
-Next steps:
-- How do I check the general functioning of the algorithm? 
-    - Are there cases where I know what is supposed to be the final outcome?
-    - Also, should it always be the same given the same input or can it be different? We can check that, but I doubt it.
-- Do we need a mutex for each philo or just one in general?
-*/
