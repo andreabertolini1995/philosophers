@@ -30,6 +30,11 @@ typedef struct s_philo
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
+	int					must_eat;
+	int					num_meals;
+	bool				is_full;
+	int					*num_full_philos;
+	int					num_philos;
 }	t_philo;
 
 // Threads and mutexes
@@ -45,5 +50,6 @@ void			*routine(void *arg);
 long int		get_current_time(void);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlen(const char *str);
+int				ft_atoi(const char *str);
 
 #endif
