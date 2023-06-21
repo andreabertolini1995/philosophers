@@ -73,7 +73,7 @@ int	main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6)
 	{
-		printf("Too many ot too few arguments provided.\n");
+		printf("Too many or too few arguments provided.\n");
 		return (1);
 	}
 	num_philos[0] = ft_atoi(argv[1]);
