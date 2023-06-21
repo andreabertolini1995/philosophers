@@ -63,6 +63,12 @@ static int	*fill_times_array(int argc, char **argv)
 	return (times);
 }
 
+static int error(char *str)
+{
+    printf("%s\n", str);
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	pthread_mutex_t	*forks;
@@ -72,10 +78,13 @@ int	main(int argc, char **argv)
 	int				num_philos[2];
 
 	if (argc < 5 || argc > 6)
-	{
-		printf("Too many or too few arguments provided.\n");
-		return (1);
-	}
+    {
+		error("Too many or too few arguments provided.\n");
+    }
+    if (ft_atoi(argv[1]) < 1)
+    {
+        error("There should be at least one philosopher.\n");
+    }
 	num_philos[0] = ft_atoi(argv[1]);
 	num_philos[1] = 0;
 	times = fill_times_array(argc, argv);

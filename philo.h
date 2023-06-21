@@ -45,6 +45,7 @@ pthread_mutex_t	*create_forks(int num_philos);
 
 // Routine
 void			*routine(void *arg);
+void			*routine_one_philo(void *arg);
 
 // Utils
 long int		get_current_time(void);

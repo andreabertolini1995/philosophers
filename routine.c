@@ -36,6 +36,22 @@ static void	pick_up_forks(t_philo *philo)
 	}
 }
 
+void	*routine_one_philo(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *) arg;
+	while (42) // do we need this loop?
+	{
+		print(philo, "is thinking");
+		if (get_current_time() > (philo->start_time + philo->time_to_die))
+		{
+			print(philo, "died");
+			exit(1);
+		}
+	}
+}
+
 void	*routine(void *arg)
 {
 	t_philo	*philo;
@@ -45,6 +61,11 @@ void	*routine(void *arg)
 	{
 		print(philo, "is thinking");
 		pick_up_forks(philo);
+		// if (get_current_time() > (philo->start_time + philo->time_to_die))
+		// {
+		// 	print(philo, "died");
+		// 	exit(1);
+		// }
 		print(philo, "is eating");
 		usleep((philo->time_to_eat) * 1000);
 		philo->num_meals++;

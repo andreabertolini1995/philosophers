@@ -34,14 +34,19 @@ pthread_t	*create_threads(int num_philos, t_philo *philosophers)
 	pthread_t	*threads;
 	int			i;
 
+	i = 0;
 	threads = (pthread_t *) malloc (sizeof(pthread_t) * num_philos);
 	if (threads == NULL)
 		return (0);
-	i = 0;
-	while (i < num_philos)
+	if (num_philos == 1)
+		pthread_create(&threads[i], NULL, &routine_one_philo, (void *)&philosophers[i]);
+	else
 	{
-		pthread_create(&threads[i], NULL, &routine, (void *)&philosophers[i]);
-		i++;
+		while (i < num_philos)
+		{
+			pthread_create(&threads[i], NULL, &routine, (void *)&philosophers[i]);
+			i++;
+		}
 	}
 	return (threads);
 }
