@@ -29,48 +29,52 @@ pthread_mutex_t	*create_forks(int num_philos)
 	return (forks);
 }
 
-pthread_t	*create_threads(int num_philos, t_philo *philosophers)
+int	create_threads(t_dining *dining)
 {
-	pthread_t	*threads;
 	int			i;
 
 	i = 0;
-	threads = (pthread_t *) malloc (sizeof(pthread_t) * num_philos);
-	if (threads == NULL)
+	dining->philo_threads = (pthread_t *) malloc (sizeof(pthread_t) * dining->num_philos);
+	if (dining->philo_threads == NULL)
 		return (0);
-	if (num_philos == 1)
-		pthread_create(&threads[i], NULL, &routine_one_philo, (void *)&philosophers[i]);
+	if (dining->num_philos == 1)
+		pthread_create(&dining->philo_threads[i], NULL, &one_philo_routine, (void *)&dining->philos[i]);
 	else
 	{
-		while (i < num_philos)
+		while (i < dining->num_philos)
 		{
-			pthread_create(&threads[i], NULL, &routine, (void *)&philosophers[i]);
+			if (pthread_create(&dining->philo_threads[i], NULL, &philos_routine, (void *)&dining->philos[i]))
+				return (1);
 			i++;
 		}
 	}
-	return (threads);
+	if (pthread_create(&dining->monit_all_alive, NULL, &all_alive_routine, dining))
+		return (1);
+	// pthread_create(&dining->monit_all_full, NULL, &all_full_routine, dining);
+	return (0);
 }
 
-void	terminate_threads(int num_philos, pthread_t *threads)
+void	terminate_threads(t_dining *dining)
 {
 	int	i;
 
 	i = 0;
-	while (i < num_philos)
+	while (i < dining->num_philos)
 	{
-		pthread_join(threads[i], NULL);
+		pthread_join(dining->philo_threads[i], NULL);
 		i++;
 	}
+	pthread_join(dining->monit_all_alive, NULL);
 }
 
-void	destroy_mutexes(int num_philos, pthread_mutex_t *forks)
+void	destroy_mutexes(t_dining *dining)
 {
 	int	i;
 
 	i = 0;
-	while (i < num_philos)
+	while (i < dining->num_philos)
 	{
-		pthread_mutex_destroy(&forks[i]);
+		pthread_mutex_destroy(&dining->forks[i]);
 		i++;
 	}
 }

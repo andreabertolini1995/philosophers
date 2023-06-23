@@ -20,37 +20,76 @@
 # include <sys/time.h>
 # include <stdbool.h>
 
+typedef enum e_philo_state
+{
+	EATING = 0,
+	SLEEPING = 1,
+	THINKING = 2,
+	DEAD = 3,
+	// FULL = 4,
+	// IDLE = 5
+}	t_state;
 typedef struct s_philo
 {
 	int					number;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
-	long int			start_time;
+	
+	int					num_meals;
 	long int			time_last_meal;
+
+	long int			start_time;
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
-	int					must_eat;
-	int					num_meals;
+
 	bool				is_full;
-	int					*num_full_philos;
-	int					num_philos;
+	t_state				state;
+
 }	t_philo;
 
+typedef struct s_dining
+{
+	int				num_philos;
+	long int		start_time;
+	
+	pthread_mutex_t	*forks;
+	t_philo			*philos;
+	pthread_t		*philo_threads;
+	
+	int				num_full_philos;
+	int				must_eat;
+
+	pthread_t		monit_all_alive;
+	pthread_t		monit_all_full;
+}	t_dining;
+
 // Threads and mutexes
-pthread_t		*create_threads(int num_philos, t_philo *philosophers);
-void			terminate_threads(int num_philos, pthread_t *threads);
-void			destroy_mutexes(int num_philos, pthread_mutex_t *forks);
+int				create_threads(t_dining *dining);
+void			terminate_threads(t_dining *dining);
+void			destroy_mutexes(t_dining *dining);
 pthread_mutex_t	*create_forks(int num_philos);
 
 // Routine
-void			*routine(void *arg);
-void			*routine_one_philo(void *arg);
+void			*one_philo_routine(void *arg);
+void			*philos_routine(void *arg);
+void			*all_alive_routine(void *arg);
+// void			*all_full_routine(void *arg);
 
 // Utils
 long int		get_current_time(void);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlen(const char *str);
 int				ft_atoi(const char *str);
+
+// Philo actions
+void			print(t_philo *philo, char *action);
+int				philo_eat(t_philo *philo);
+int				philo_sleep(t_philo *philo);
+int				philo_think(t_philo *philo);
+bool			philo_died(t_philo *philo);
+int				take_right_fork(t_philo *philo);
+int				take_left_fork(t_philo *philo);
+int				pick_up_forks(t_philo *philo);
 
 #endif

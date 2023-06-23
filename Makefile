@@ -1,5 +1,5 @@
 NAME = philo
-SOURCES = main.c threads.c routine.c utils.c
+SOURCES = main.c threads.c routines.c utils.c philo_actions.c philo_actions_2.c
 OBJS = $(SOURCES:.c=.o)
 
 CC = cc
