@@ -29,7 +29,7 @@ pthread_mutex_t	*create_forks(int num_philos)
 	return (forks);
 }
 
-int	create_threads(t_dining *dining)
+int	create_threads(t_dining *dining, int argc)
 {
 	int			i;
 
@@ -52,12 +52,13 @@ int	create_threads(t_dining *dining)
 	}
 	pthread_create(&dining->monit_all_alive, NULL,
 		&check_if_philos_are_dead, dining);
-	pthread_create(&dining->monit_all_full, NULL,
-		&check_if_philos_are_full, dining);
+	if (argc == 6)
+		pthread_create(&dining->monit_all_full, NULL,
+			&check_if_philos_are_full, dining);
 	return (0);
 }
 
-void	terminate_threads(t_dining *dining)
+void	terminate_threads(t_dining *dining, int argc)
 {
 	int	i;
 
@@ -68,7 +69,8 @@ void	terminate_threads(t_dining *dining)
 		i++;
 	}
 	pthread_join(dining->monit_all_alive, NULL);
-	pthread_join(dining->monit_all_full, NULL);
+	if (argc == 6)
+		pthread_join(dining->monit_all_full, NULL);
 }
 
 void	destroy_mutexes(t_dining *dining)

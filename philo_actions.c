@@ -34,9 +34,9 @@ int	philo_eat(t_philo *philo)
 
 int	philo_sleep(t_philo *philo)
 {
-	print(philo, "is sleeping");
 	if (philo->state == DEAD)
 		return (1);
+	print(philo, "is sleeping");
 	philo->state = SLEEPING;
 	usleep((philo->time_to_sleep) * 1000);
 	return (0);
@@ -44,9 +44,9 @@ int	philo_sleep(t_philo *philo)
 
 int	philo_think(t_philo *philo)
 {
-	print(philo, "is thinking");
 	if (philo->state == DEAD)
 		return (1);
+	print(philo, "is thinking");
 	philo->state = THINKING;
 	return (0);
 }

@@ -57,8 +57,8 @@ typedef struct s_dining
 }	t_dining;
 
 // Threads and mutexes
-int				create_threads(t_dining *dining);
-void			terminate_threads(t_dining *dining);
+int				create_threads(t_dining *dining, int argc);
+void			terminate_threads(t_dining *dining, int argc);
 void			destroy_mutexes(t_dining *dining);
 pthread_mutex_t	*create_forks(int num_philos);
 

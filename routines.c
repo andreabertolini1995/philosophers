@@ -17,10 +17,11 @@ void	*one_philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *) arg;
-	while (philo->state != DEAD)
+	while (42)
 	{
-		philo_think(philo);
-		philo_died(philo);
+		if (philo_think(philo) == 1)
+			break ;
+		usleep(500);
 	}
 	return (NULL);
 }
