@@ -80,16 +80,6 @@ void	*check_if_philos_are_dead(void *arg)
 	return (NULL);
 }
 
-bool	is_philo_full(t_philo *philo)
-{
-	if (philo->num_meals == philo->must_eat && philo->is_full == false)
-	{
-		philo->is_full = true;
-		return (true);
-	}
-	return (false);
-}
-
 void	*check_if_philos_are_full(void *arg)
 {
 	t_dining	*dining;
@@ -102,7 +92,8 @@ void	*check_if_philos_are_full(void *arg)
 		if (is_philo_full(&dining->philos[i]))
 		{
 			dining->num_full_philos++;
-			if (dining->num_full_philos == dining->num_philos && dining->num_full_philos != 0)
+			if (dining->num_full_philos == dining->num_philos
+				&& dining->num_full_philos != 0)
 			{
 				notify_all_philos(dining);
 				break ;
@@ -115,4 +106,3 @@ void	*check_if_philos_are_full(void *arg)
 	}
 	return (NULL);
 }
-

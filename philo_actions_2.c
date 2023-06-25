@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo.h"
+#include "philo.h"
 
 int	take_right_fork(t_philo *philo)
 {
@@ -53,4 +53,14 @@ int	pick_up_forks(t_philo *philo)
 			return (1);
 	}
 	return (0);
+}
+
+bool	is_philo_full(t_philo *philo)
+{
+	if (philo->num_meals == philo->must_eat && philo->is_full == false)
+	{
+		philo->is_full = true;
+		return (true);
+	}
+	return (false);
 }

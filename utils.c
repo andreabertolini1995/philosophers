@@ -80,3 +80,9 @@ int	ft_atoi(const char *str)
 	}
 	return (final_number * sign);
 }
+
+int	error(char *str)
+{
+	printf("%s\n", str);
+	return (1);
+}

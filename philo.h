@@ -32,16 +32,13 @@ typedef struct s_philo
 	int					number;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
-	
 	int					num_meals;
 	long int			time_last_meal;
-
 	long int			start_time;
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat;
-
 	bool				is_full;
 	t_state				state;
 
@@ -51,13 +48,10 @@ typedef struct s_dining
 {
 	int				num_philos;
 	long int		start_time;
-	
 	pthread_mutex_t	*forks;
 	t_philo			*philos;
 	pthread_t		*philo_threads;
-	
 	int				num_full_philos;
-
 	pthread_t		monit_all_alive;
 	pthread_t		monit_all_full;
 }	t_dining;
@@ -79,6 +73,7 @@ long int		get_current_time(void);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlen(const char *str);
 int				ft_atoi(const char *str);
+int				error(char *str);
 
 // Philo actions
 void			print(t_philo *philo, char *action);
@@ -89,5 +84,6 @@ bool			philo_died(t_philo *philo);
 int				take_right_fork(t_philo *philo);
 int				take_left_fork(t_philo *philo);
 int				pick_up_forks(t_philo *philo);
+bool			is_philo_full(t_philo *philo);
 
 #endif

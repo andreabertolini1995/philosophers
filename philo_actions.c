@@ -10,20 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo.h"
+#include "philo.h"
 
 void	print(t_philo *philo, char *action)
 {
 	printf("%ld %d %s\n", get_current_time()
-			- philo->start_time, philo->number, action);
+		- philo->start_time, philo->number, action);
 }
 
-int philo_eat(t_philo *philo)
+int	philo_eat(t_philo *philo)
 {
 	if (pick_up_forks(philo) == 1)
-			return (1);
+		return (1);
 	print(philo, "is eating");
-    philo->state = EATING;
+	philo->state = EATING;
 	philo->num_meals++;
 	usleep((philo->time_to_eat) * 1000);
 	philo->time_last_meal = get_current_time();
@@ -32,32 +32,33 @@ int philo_eat(t_philo *philo)
 	return (0);
 }
 
-int philo_sleep(t_philo *philo)
+int	philo_sleep(t_philo *philo)
 {
 	print(philo, "is sleeping");
 	if (philo->state == DEAD)
-        return (1);
+		return (1);
 	philo->state = SLEEPING;
 	usleep((philo->time_to_sleep) * 1000);
 	return (0);
 }
 
-int philo_think(t_philo *philo)
+int	philo_think(t_philo *philo)
 {
 	print(philo, "is thinking");
-    if (philo->state == DEAD)
-        return (1);
-    philo->state = THINKING;
+	if (philo->state == DEAD)
+		return (1);
+	philo->state = THINKING;
 	return (0);
 }
 
-bool philo_died(t_philo *philo)
+bool	philo_died(t_philo *philo)
 {
-	if (get_current_time() > (philo->time_last_meal + philo->time_to_die) && philo->state != EATING)
+	if (get_current_time() > (philo->time_last_meal + philo->time_to_die)
+		&& philo->state != EATING)
 	{
 		if (philo->is_full == false)
 			print(philo, "died");
-        philo->state = DEAD;
+		philo->state = DEAD;
 		return (true);
 	}
 	return (false);
