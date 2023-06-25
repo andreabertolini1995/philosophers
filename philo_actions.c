@@ -55,7 +55,8 @@ bool philo_died(t_philo *philo)
 {
 	if (get_current_time() > (philo->time_last_meal + philo->time_to_die) && philo->state != EATING)
 	{
-		print(philo, "died");
+		if (philo->is_full == false)
+			print(philo, "died");
         philo->state = DEAD;
 		return (true);
 	}

@@ -22,12 +22,10 @@
 
 typedef enum e_philo_state
 {
-	EATING = 0,
-	SLEEPING = 1,
-	THINKING = 2,
-	DEAD = 3,
-	// FULL = 4,
-	// IDLE = 5
+	EATING,
+	SLEEPING,
+	THINKING,
+	DEAD,
 }	t_state;
 typedef struct s_philo
 {
@@ -42,6 +40,7 @@ typedef struct s_philo
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
+	int					must_eat;
 
 	bool				is_full;
 	t_state				state;
@@ -58,7 +57,6 @@ typedef struct s_dining
 	pthread_t		*philo_threads;
 	
 	int				num_full_philos;
-	int				must_eat;
 
 	pthread_t		monit_all_alive;
 	pthread_t		monit_all_full;
@@ -72,9 +70,9 @@ pthread_mutex_t	*create_forks(int num_philos);
 
 // Routine
 void			*one_philo_routine(void *arg);
-void			*philos_routine(void *arg);
-void			*all_alive_routine(void *arg);
-// void			*all_full_routine(void *arg);
+void			*all_philos_routine(void *arg);
+void			*check_if_philos_are_dead(void *arg);
+void			*check_if_philos_are_full(void *arg);
 
 // Utils
 long int		get_current_time(void);

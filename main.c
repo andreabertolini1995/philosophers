@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-static t_philo	*create_philosophers(t_dining *dining, char **argv)
+static t_philo	*create_philosophers(t_dining *dining, int argc, char **argv)
 {
 	t_philo	*philos;
 	int		i;
@@ -30,6 +30,8 @@ static t_philo	*create_philosophers(t_dining *dining, char **argv)
 		philos[i].time_to_die = ft_atoi(argv[2]);
 		philos[i].time_to_eat = ft_atoi(argv[3]);
 		philos[i].time_to_sleep = ft_atoi(argv[4]);
+		if (argc == 6)
+			philos[i].must_eat = ft_atoi(argv[5]);
 
 		philos[i].num_meals = 0;
 		philos[i].is_full = false;
@@ -63,12 +65,9 @@ static	t_dining *initialize_dining_data(int argc, char **argv)
 	dining->start_time = get_current_time();
 	
 	dining->forks = create_forks(dining->num_philos);
-	dining->philos = create_philosophers(dining, argv);
+	dining->philos = create_philosophers(dining, argc, argv);
 	create_threads(dining);
-
 	dining->num_full_philos = 0;
-	if (argc == 6)
-		dining->must_eat = ft_atoi(argv[5]);
 	return (dining);
 }
 

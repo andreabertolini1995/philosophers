@@ -25,7 +25,7 @@ void	*one_philo_routine(void *arg)
 	return (NULL);
 }
 
-void	*philos_routine(void *arg)
+void	*all_philos_routine(void *arg)
 {
 	t_philo	*philo;
 
@@ -58,7 +58,7 @@ void	notify_all_philos(t_dining *dining)
 	}
 }
 
-void	*all_alive_routine(void *arg)
+void	*check_if_philos_are_dead(void *arg)
 {
 	t_dining	*dining;
 	int			i;
@@ -80,17 +80,39 @@ void	*all_alive_routine(void *arg)
 	return (NULL);
 }
 
-// void	*all_full_routine(void *arg)
-// {
-// 	t_dining	*dining;
+bool	is_philo_full(t_philo *philo)
+{
+	if (philo->num_meals == philo->must_eat && philo->is_full == false)
+	{
+		philo->is_full = true;
+		return (true);
+	}
+	return (false);
+}
 
-// 	dining = (t_dining *) arg;
-// if (philo->num_meals == philo->must_eat && philo->is_full == false)
-		// {
-		// 	philo->is_full = true;
-		// 	philo->num_full_philos[0]++;
-		// }
-		// if (philo->num_full_philos[0] == philo->num_philos)
-		// 	exit(1);
+void	*check_if_philos_are_full(void *arg)
+{
+	t_dining	*dining;
+	int			i;
 
-// }
+	dining = (t_dining *) arg;
+	i = 0;
+	while (i < dining->num_philos)
+	{
+		if (is_philo_full(&dining->philos[i]))
+		{
+			dining->num_full_philos++;
+			if (dining->num_full_philos == dining->num_philos && dining->num_full_philos != 0)
+			{
+				notify_all_philos(dining);
+				break ;
+			}
+		}
+		if (i == dining->num_philos - 1)
+			i = 0;
+		else
+			i++;
+	}
+	return (NULL);
+}
+
