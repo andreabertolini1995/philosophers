@@ -1,5 +1,5 @@
 NAME = philo
-SOURCES = main.c threads.c routines.c utils.c philo_actions.c philo_actions_2.c
+SOURCES = main.c init.c threads.c routines.c utils.c philo_actions.c philo_actions_2.c
 OBJS = $(SOURCES:.c=.o)
 
 CC = cc
@@ -11,7 +11,7 @@ LEAKS_FLAGS =  -fsanitize=address -fno-omit-frame-pointer
 all: $(NAME)	
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(THREAD_FLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LEAKS_FLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)

@@ -79,3 +79,11 @@ void	destroy_mutexes(t_dining *dining)
 		i++;
 	}
 }
+
+void	free_data(t_dining *dining)
+{
+	free(dining->forks);
+	free(dining->philo_threads);
+	free(dining->philos);
+	free(dining);
+}

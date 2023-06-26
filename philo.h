@@ -27,6 +27,7 @@ typedef enum e_philo_state
 	THINKING,
 	DEAD,
 }	t_state;
+
 typedef struct s_philo
 {
 	int					number;
@@ -55,11 +56,19 @@ typedef struct s_dining
 	pthread_t		monitor_philos;
 }	t_dining;
 
+// Init
+void		initialize_philos(t_dining *dining, t_philo *philos,
+							int argc, char **argv);
+t_philo		*create_philosophers(t_dining *dining, int argc, char **argv);
+t_dining	*initialize_dining_data(int argc, char **argv);
+int			check_input(int argc, char **argv);
+
 // Threads and mutexes
 int				create_threads(t_dining *dining);
 void			terminate_threads(t_dining *dining);
 void			destroy_mutexes(t_dining *dining);
 pthread_mutex_t	*create_forks(int num_philos);
+void			free_data(t_dining *dining);
 
 // Routine
 void			*one_philo_routine(void *arg);
@@ -71,7 +80,7 @@ long int		get_current_time(void);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlen(const char *str);
 int				ft_atoi(const char *str);
-int				error(char *str);
+int				ft_str_is_numeric(char *str);
 
 // Philo actions
 void			print(t_philo *philo, char *action);
