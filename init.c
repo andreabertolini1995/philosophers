@@ -36,6 +36,8 @@ void	initialize_philos(t_dining *dining, t_philo *philos,
 			philos[i].right_fork = &dining->forks[dining->num_philos - 1];
 		else
 			philos[i].right_fork = &dining->forks[i + 1];
+		pthread_mutex_init(&dining->mutex_print, NULL);
+		philos[i].dining_data = dining;
 		i++;
 	}
 }

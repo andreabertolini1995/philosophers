@@ -42,7 +42,7 @@ typedef struct s_philo
 	int					must_eat;
 	bool				is_full;
 	t_state				state;
-
+	struct s_dining		*dining_data;
 }	t_philo;
 
 typedef struct s_dining
@@ -50,6 +50,7 @@ typedef struct s_dining
 	int				num_philos;
 	long int		start_time;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t mutex_print;
 	t_philo			*philos;
 	pthread_t		*philo_threads;
 	int				num_full_philos;

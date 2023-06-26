@@ -6,12 +6,12 @@ CC = cc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror
 THREAD_FLAGS = -fsanitize=thread -pthread
-LEAKS_FLAGS =  -fsanitize=address -fno-omit-frame-pointer
+THREADS_LEAKS_FLAGS = -fsanitize=address -fno-omit-frame-pointer -pthread
 
 all: $(NAME)	
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LEAKS_FLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(THREADS_LEAKS_FLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)
