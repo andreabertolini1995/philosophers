@@ -6,6 +6,7 @@ CC = cc
 RM = rm -f
 CFLAGS = -Wall -Wextra -Werror
 THREAD_FLAGS = -fsanitize=thread -pthread
+LEAKS_FLAGS =  -fsanitize=address -fno-omit-frame-pointer
 
 all: $(NAME)	
 

@@ -52,21 +52,19 @@ typedef struct s_dining
 	t_philo			*philos;
 	pthread_t		*philo_threads;
 	int				num_full_philos;
-	pthread_t		monit_all_alive;
-	pthread_t		monit_all_full;
+	pthread_t		monitor_philos;
 }	t_dining;
 
 // Threads and mutexes
-int				create_threads(t_dining *dining, int argc);
-void			terminate_threads(t_dining *dining, int argc);
+int				create_threads(t_dining *dining);
+void			terminate_threads(t_dining *dining);
 void			destroy_mutexes(t_dining *dining);
 pthread_mutex_t	*create_forks(int num_philos);
 
 // Routine
 void			*one_philo_routine(void *arg);
 void			*all_philos_routine(void *arg);
-void			*check_if_philos_are_dead(void *arg);
-void			*check_if_philos_are_full(void *arg);
+void			*check_if_philos_are_dead_or_full(void *arg);
 
 // Utils
 long int		get_current_time(void);

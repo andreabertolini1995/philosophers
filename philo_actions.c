@@ -24,9 +24,9 @@ int	philo_eat(t_philo *philo)
 		return (1);
 	print(philo, "is eating");
 	philo->state = EATING;
-	philo->num_meals++;
 	usleep((philo->time_to_eat) * 1000);
 	philo->time_last_meal = get_current_time();
+	philo->num_meals++;
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	return (0);

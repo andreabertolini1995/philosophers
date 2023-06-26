@@ -62,7 +62,7 @@ static	t_dining	*initialize_dining_data(int argc, char **argv)
 	dining->start_time = get_current_time();
 	dining->forks = create_forks(dining->num_philos);
 	dining->philos = create_philosophers(dining, argc, argv);
-	create_threads(dining, argc);
+	create_threads(dining);
 	dining->num_full_philos = 0;
 	return (dining);
 }
@@ -88,8 +88,8 @@ int	main(int argc, char **argv)
 		error("There should be at least one philosopher.\n");
 	}
 	dining = initialize_dining_data(argc, argv);
-	terminate_threads(dining, argc);
-	free_data(dining);
+	terminate_threads(dining);
 	destroy_mutexes(dining);
+	free_data(dining);
 	return (0);
 }

@@ -47,7 +47,16 @@ void	*all_philos_routine(void *arg)
 	return (NULL);
 }
 
-void	notify_all_philos(t_dining *dining)
+static int	update_philo_index(t_dining *dining, int i)
+{
+	if (i == dining->num_philos - 1)
+		i = 0;
+	else
+		i++;
+	return (i);
+}
+
+static void	notify_all_philos(t_dining *dining)
 {
 	int		i;
 
@@ -59,7 +68,7 @@ void	notify_all_philos(t_dining *dining)
 	}
 }
 
-void	*check_if_philos_are_dead(void *arg)
+void	*check_if_philos_are_dead_or_full(void *arg)
 {
 	t_dining	*dining;
 	int			i;
@@ -73,24 +82,7 @@ void	*check_if_philos_are_dead(void *arg)
 			notify_all_philos(dining);
 			break ;
 		}
-		if (i == dining->num_philos - 1)
-			i = 0;
-		else
-			i++;
-	}
-	return (NULL);
-}
-
-void	*check_if_philos_are_full(void *arg)
-{
-	t_dining	*dining;
-	int			i;
-
-	dining = (t_dining *) arg;
-	i = 0;
-	while (i < dining->num_philos)
-	{
-		if (is_philo_full(&dining->philos[i]))
+		else if (is_philo_full(&dining->philos[i]))
 		{
 			dining->num_full_philos++;
 			if (dining->num_full_philos == dining->num_philos
@@ -100,10 +92,7 @@ void	*check_if_philos_are_full(void *arg)
 				break ;
 			}
 		}
-		if (i == dining->num_philos - 1)
-			i = 0;
-		else
-			i++;
+		i = update_philo_index(dining, i);
 	}
 	return (NULL);
 }
