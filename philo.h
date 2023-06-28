@@ -50,7 +50,7 @@ typedef struct s_dining
 	int				num_philos;
 	long int		start_time;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t mutex_print;
+	pthread_mutex_t	mutex_print;
 	t_philo			*philos;
 	pthread_t		*philo_threads;
 	int				num_full_philos;
@@ -58,11 +58,11 @@ typedef struct s_dining
 }	t_dining;
 
 // Init
-void		initialize_philos(t_dining *dining, t_philo *philos,
-							int argc, char **argv);
-t_philo		*create_philosophers(t_dining *dining, int argc, char **argv);
-t_dining	*initialize_dining_data(int argc, char **argv);
-int			check_input(int argc, char **argv);
+void			initialize_philos(t_dining *dining, t_philo *philos,
+					int argc, char **argv);
+t_philo			*create_philosophers(t_dining *dining, int argc, char **argv);
+t_dining		*initialize_dining_data(int argc, char **argv);
+int				check_input(int argc, char **argv);
 
 // Threads and mutexes
 int				create_threads(t_dining *dining);

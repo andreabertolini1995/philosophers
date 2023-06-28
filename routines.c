@@ -87,10 +87,7 @@ void	*check_if_philos_are_dead_or_full(void *arg)
 			dining->num_full_philos++;
 			if (dining->num_full_philos == dining->num_philos
 				&& dining->num_full_philos != 0)
-			{
-				notify_all_philos(dining);
 				break ;
-			}
 		}
 		i = update_philo_index(dining, i);
 	}
