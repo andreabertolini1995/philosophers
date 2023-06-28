@@ -16,7 +16,8 @@ int	take_right_fork(t_philo *philo)
 {
 	if (philo->state == DEAD)
 		return (1);
-	pthread_mutex_lock(philo->right_fork);
+	if (pthread_mutex_lock(philo->right_fork) != 0)
+		return (1);
 	print(philo, "has taken a fork");
 	return (0);
 }
@@ -25,7 +26,8 @@ int	take_left_fork(t_philo *philo)
 {
 	if (philo->state == DEAD)
 		return (1);
-	pthread_mutex_lock(philo->left_fork);
+	if (pthread_mutex_lock(philo->left_fork) != 0)
+		return (1);
 	print(philo, "has taken a fork");
 	return (0);
 }
