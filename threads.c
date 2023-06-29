@@ -85,6 +85,7 @@ void	destroy_mutexes(t_dining *dining)
 	pthread_mutex_destroy(&dining->mutex_time_to_die);
 	pthread_mutex_destroy(&dining->mutex_time_to_eat);
 	pthread_mutex_destroy(&dining->mutex_time_to_sleep);
+	pthread_mutex_destroy(&dining->mutex_must_eat);
 	pthread_mutex_destroy(&dining->mutex_num_philos);
 	pthread_mutex_destroy(&dining->mutex_num_full_philos);
 }

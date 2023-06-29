@@ -71,6 +71,7 @@ t_dining	*initialize_dining_data(int argc, char **argv)
 	pthread_mutex_init(&dining->mutex_time_to_die, NULL);
 	pthread_mutex_init(&dining->mutex_time_to_eat, NULL);
 	pthread_mutex_init(&dining->mutex_time_to_sleep, NULL);
+	pthread_mutex_init(&dining->mutex_must_eat, NULL);
 	pthread_mutex_init(&dining->mutex_num_philos, NULL);
 	pthread_mutex_init(&dining->mutex_num_full_philos, NULL);
 	return (dining);

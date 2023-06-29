@@ -11,7 +11,7 @@ THREADS_LEAKS_FLAGS = -fsanitize=address -fno-omit-frame-pointer -pthread
 all: $(NAME)	
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(THREADS_LEAKS_FLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)

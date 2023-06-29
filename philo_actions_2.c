@@ -63,7 +63,7 @@ int	pick_up_forks(t_philo *philo)
 
 bool	is_philo_full(t_philo *philo)
 {
-	if (get_num_meals(philo) == philo->dining_data->must_eat
+	if (get_num_meals(philo) == get_must_eat(philo->dining_data)
 		&& philo->is_full == false)
 	{
 		philo->is_full = true;

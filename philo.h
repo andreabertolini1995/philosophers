@@ -60,6 +60,7 @@ typedef struct s_dining
 	pthread_mutex_t	mutex_time_to_die;
 	pthread_mutex_t	mutex_time_to_eat;
 	pthread_mutex_t	mutex_time_to_sleep;
+	pthread_mutex_t	mutex_must_eat;
 	pthread_mutex_t	mutex_num_philos;
 	pthread_mutex_t	mutex_num_full_philos;
 }	t_dining;
@@ -109,6 +110,7 @@ int				get_time_to_sleep(t_dining *dining_data);
 int				get_num_meals(t_philo *philo);
 int				get_num_philos(t_dining *dining_data);
 int				get_num_full_philos(t_dining *dining_data);
+int				get_must_eat(t_dining *dining_data);
 
 // Setters
 void			set_philo_state(t_philo *philo, t_state state);

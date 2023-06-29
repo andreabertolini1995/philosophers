@@ -42,6 +42,16 @@ int	get_time_to_sleep(t_dining *dining_data)
 	return (time_to_sleep);
 }
 
+int	get_must_eat(t_dining *dining_data)
+{
+	int	must_eat;
+
+	pthread_mutex_lock(&dining_data->mutex_must_eat);
+	must_eat = dining_data->must_eat;
+	pthread_mutex_unlock(&dining_data->mutex_must_eat);
+	return (must_eat);
+}
+
 int	get_num_meals(t_philo *philo)
 {
 	int	num_meals;
