@@ -35,11 +35,11 @@ void	*all_philos_routine(void *arg)
 	{
 		if (philo_think(philo) == 1)
 			break ;
-		if (philo->state == DEAD)
+		if (get_philo_state(philo) == DEAD)
 			break ;
 		if (philo_eat(philo) == 1)
 			break ;
-		if (philo->state == DEAD)
+		if (get_philo_state(philo) == DEAD)
 			break ;
 		if (philo_sleep(philo) == 1)
 			break ;

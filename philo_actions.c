@@ -12,20 +12,12 @@
 
 #include "philo.h"
 
-void	print(t_philo *philo, char *action)
-{
-	pthread_mutex_lock(&philo->dining_data->mutex_print);
-	printf("%ld %d %s\n", get_current_time()
-		- philo->start_time, philo->number, action);
-	pthread_mutex_unlock(&philo->dining_data->mutex_print);
-}
-
 int	philo_eat(t_philo *philo)
 {
 	if (pick_up_forks(philo) == 1)
 		return (1);
 	print(philo, "is eating");
-	philo->state = EATING;
+	set_philo_state(philo, EATING);
 	usleep((philo->time_to_eat) * 1000);
 	philo->time_last_meal = get_current_time();
 	philo->num_meals++;
@@ -36,33 +28,33 @@ int	philo_eat(t_philo *philo)
 
 int	philo_sleep(t_philo *philo)
 {
-	if (philo->state == DEAD || (philo->dining_data->num_full_philos
+	if (get_philo_state(philo) == DEAD || (philo->dining_data->num_full_philos
 			== philo->dining_data->num_philos))
 		return (1);
 	print(philo, "is sleeping");
-	philo->state = SLEEPING;
+	set_philo_state(philo, SLEEPING);
 	usleep((philo->time_to_sleep) * 1000);
 	return (0);
 }
 
 int	philo_think(t_philo *philo)
 {
-	if (philo->state == DEAD || (philo->dining_data->num_full_philos
+	if (get_philo_state(philo) == DEAD || (philo->dining_data->num_full_philos
 			== philo->dining_data->num_philos))
 		return (1);
 	print(philo, "is thinking");
-	philo->state = THINKING;
+	set_philo_state(philo, THINKING);
 	return (0);
 }
 
 bool	philo_died(t_philo *philo)
 {
 	if (get_current_time() > (philo->time_last_meal + philo->time_to_die)
-		&& philo->state != EATING)
+		&& get_philo_state(philo) != EATING)
 	{
 		if (philo->is_full == false)
 			print(philo, "died");
-		philo->state = DEAD;
+		set_philo_state(philo, DEAD);
 		return (true);
 	}
 	return (false);

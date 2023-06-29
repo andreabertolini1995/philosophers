@@ -18,6 +18,7 @@ void	initialize_philos(t_dining *dining, t_philo *philos,
 	int	i;
 
 	i = 0;
+	pthread_mutex_init(&dining->mutex_print, NULL);
 	while (i < dining->num_philos)
 	{
 		philos[i].number = i + 1;
@@ -36,7 +37,7 @@ void	initialize_philos(t_dining *dining, t_philo *philos,
 			philos[i].right_fork = &dining->forks[dining->num_philos - 1];
 		else
 			philos[i].right_fork = &dining->forks[i - 1];
-		pthread_mutex_init(&dining->mutex_print, NULL);
+		pthread_mutex_init(&philos[i].mutex_state, NULL);
 		philos[i].dining_data = dining;
 		i++;
 	}

@@ -22,10 +22,10 @@
 
 typedef enum e_philo_state
 {
-	EATING,
-	SLEEPING,
-	THINKING,
-	DEAD,
+	EATING = 0,
+	SLEEPING = 1,
+	THINKING = 2,
+	DEAD = 3,
 }	t_state;
 
 typedef struct s_philo
@@ -42,6 +42,7 @@ typedef struct s_philo
 	int					must_eat;
 	bool				is_full;
 	t_state				state;
+	pthread_mutex_t		mutex_state;
 	struct s_dining		*dining_data;
 }	t_philo;
 
@@ -84,7 +85,6 @@ int				ft_atoi(const char *str);
 int				ft_str_is_numeric(char *str);
 
 // Philo actions
-void			print(t_philo *philo, char *action);
 int				philo_eat(t_philo *philo);
 int				philo_sleep(t_philo *philo);
 int				philo_think(t_philo *philo);
@@ -93,5 +93,10 @@ int				take_right_fork(t_philo *philo);
 int				take_left_fork(t_philo *philo);
 int				pick_up_forks(t_philo *philo);
 bool			is_philo_full(t_philo *philo);
+
+// Mutex functions
+void			print(t_philo *philo, char *action);
+t_state			get_philo_state(t_philo *philo);
+void			set_philo_state(t_philo *philo, t_state state);
 
 #endif
