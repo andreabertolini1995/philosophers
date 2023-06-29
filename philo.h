@@ -70,12 +70,12 @@ void			initialize_philos(t_dining *dining, t_philo *philos);
 t_philo			*create_philosophers(t_dining *dining);
 t_dining		*initialize_dining_data(int argc, char **argv);
 int				check_input(int argc, char **argv);
-
-// Threads and mutexes
 int				create_threads(t_dining *dining);
+pthread_mutex_t	*create_forks(int num_philos);
+
+// Final
 void			terminate_threads(t_dining *dining);
 void			destroy_mutexes(t_dining *dining);
-pthread_mutex_t	*create_forks(int num_philos);
 void			free_data(t_dining *dining);
 
 // Routine

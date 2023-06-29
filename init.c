@@ -77,29 +77,45 @@ t_dining	*initialize_dining_data(int argc, char **argv)
 	return (dining);
 }
 
-int	check_input(int argc, char **argv)
+pthread_mutex_t	*create_forks(int num_philos)
 {
-	int	i;
+	pthread_mutex_t	*forks;
+	int				i;
 
-	if (argc < 5 || argc > 6)
+	forks = (pthread_mutex_t *) malloc (sizeof(pthread_mutex_t) * num_philos);
+	if (forks == NULL)
+		return (0);
+	i = 0;
+	while (i < num_philos)
 	{
-		printf("Too many or too few arguments provided.\n");
-		return (1);
-	}
-	if (ft_atoi(argv[1]) < 1)
-	{
-		printf("There should be at least one philosopher.\n");
-		return (1);
-	}
-	i = 1;
-	while (i < argc)
-	{
-		if (!ft_str_is_numeric(argv[i]))
-		{
-			printf("All the arguments must be a positive integer.\n");
-			return (1);
-		}
+		pthread_mutex_init(&forks[i], NULL);
 		i++;
 	}
+	return (forks);
+}
+
+int	create_threads(t_dining *dining)
+{
+	int			i;
+
+	i = 0;
+	dining->philo_threads = (pthread_t *) malloc
+		(sizeof(pthread_t) * dining->num_philos);
+	if (dining->philo_threads == NULL)
+		return (0);
+	if (dining->num_philos == 1)
+		pthread_create(&dining->philo_threads[i], NULL,
+			&one_philo_routine, (void *)&dining->philos[i]);
+	else
+	{
+		while (i < dining->num_philos)
+		{
+			pthread_create(&dining->philo_threads[i], NULL,
+				&all_philos_routine, (void *)&dining->philos[i]);
+			i++;
+		}
+	}
+	pthread_create(&dining->monitor_philos, NULL,
+		&check_if_philos_are_dead_or_full, dining);
 	return (0);
 }

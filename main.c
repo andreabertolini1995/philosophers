@@ -12,6 +12,33 @@
 
 #include "philo.h"
 
+int	check_input(int argc, char **argv)
+{
+	int	i;
+
+	if (argc < 5 || argc > 6)
+	{
+		printf("Too many or too few arguments provided.\n");
+		return (1);
+	}
+	if (ft_atoi(argv[1]) < 1)
+	{
+		printf("There should be at least one philosopher.\n");
+		return (1);
+	}
+	i = 1;
+	while (i < argc)
+	{
+		if (!ft_str_is_numeric(argv[i]))
+		{
+			printf("All the arguments must be a positive integer.\n");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_dining		*dining;
