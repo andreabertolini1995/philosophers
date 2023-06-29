@@ -12,6 +12,15 @@
 
 #include "philo.h"
 
+static void	ft_usleep(int time_to_wait)
+{
+	long int	current_time;
+
+	current_time = get_current_time();
+	while (get_current_time() < current_time + time_to_wait)
+		usleep(500);
+}
+
 int	philo_eat(t_philo *philo)
 {
 	if (pick_up_forks(philo) == 1)
@@ -19,7 +28,7 @@ int	philo_eat(t_philo *philo)
 	print(philo, "is eating");
 	set_philo_state(philo, EATING);
 	set_time_last_meal(philo, get_current_time());
-	usleep(get_time_to_eat(philo->dining_data) * 1000);
+	ft_usleep(get_time_to_eat(philo->dining_data));
 	set_num_meals(philo, get_num_meals(philo) + 1);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
@@ -34,7 +43,7 @@ int	philo_sleep(t_philo *philo)
 		return (1);
 	print(philo, "is sleeping");
 	set_philo_state(philo, SLEEPING);
-	usleep(get_time_to_sleep(philo->dining_data) * 1000);
+	ft_usleep(get_time_to_sleep(philo->dining_data));
 	return (0);
 }
 
