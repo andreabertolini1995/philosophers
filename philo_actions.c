@@ -18,8 +18,8 @@ int	philo_eat(t_philo *philo)
 		return (1);
 	print(philo, "is eating");
 	set_philo_state(philo, EATING);
-	usleep((philo->time_to_eat) * 1000);
-	philo->time_last_meal = get_current_time();
+	usleep((philo->dining_data->time_to_eat) * 1000);
+	set_time_last_meal(philo, get_current_time());
 	philo->num_meals++;
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
@@ -33,7 +33,7 @@ int	philo_sleep(t_philo *philo)
 		return (1);
 	print(philo, "is sleeping");
 	set_philo_state(philo, SLEEPING);
-	usleep((philo->time_to_sleep) * 1000);
+	usleep((philo->dining_data->time_to_sleep) * 1000);
 	return (0);
 }
 
@@ -49,8 +49,8 @@ int	philo_think(t_philo *philo)
 
 bool	philo_died(t_philo *philo)
 {
-	if (get_current_time() > (philo->time_last_meal + philo->time_to_die)
-		&& get_philo_state(philo) != EATING)
+	if (get_current_time() > (get_time_last_meal(philo) + philo->dining_data->time_to_die)
+			&& get_philo_state(philo) != EATING)
 	{
 		if (philo->is_full == false)
 			print(philo, "died");

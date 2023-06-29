@@ -35,14 +35,10 @@ typedef struct s_philo
 	pthread_mutex_t		*right_fork;
 	int					num_meals;
 	long int			time_last_meal;
-	long int			start_time;
-	int					time_to_die;
-	int					time_to_eat;
-	int					time_to_sleep;
-	int					must_eat;
 	bool				is_full;
 	t_state				state;
 	pthread_mutex_t		mutex_state;
+	pthread_mutex_t		mutex_time_last_meal;
 	struct s_dining		*dining_data;
 }	t_philo;
 
@@ -50,6 +46,10 @@ typedef struct s_dining
 {
 	int				num_philos;
 	long int		start_time;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				must_eat;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	mutex_print;
 	t_philo			*philos;
@@ -59,9 +59,8 @@ typedef struct s_dining
 }	t_dining;
 
 // Init
-void			initialize_philos(t_dining *dining, t_philo *philos,
-					int argc, char **argv);
-t_philo			*create_philosophers(t_dining *dining, int argc, char **argv);
+void			initialize_philos(t_dining *dining, t_philo *philos);
+t_philo			*create_philosophers(t_dining *dining);
 t_dining		*initialize_dining_data(int argc, char **argv);
 int				check_input(int argc, char **argv);
 
@@ -94,9 +93,13 @@ int				take_left_fork(t_philo *philo);
 int				pick_up_forks(t_philo *philo);
 bool			is_philo_full(t_philo *philo);
 
-// Mutex functions
+// Getters
 void			print(t_philo *philo, char *action);
 t_state			get_philo_state(t_philo *philo);
+long int		get_time_last_meal(t_philo *philo);
+
+// Setters
 void			set_philo_state(t_philo *philo, t_state state);
+void			set_time_last_meal(t_philo *philo, long int time_last_meal);
 
 #endif

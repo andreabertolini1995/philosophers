@@ -16,7 +16,7 @@ int	take_right_fork(t_philo *philo)
 {
 	if (get_philo_state(philo) == DEAD || (philo->dining_data->num_full_philos
 			== philo->dining_data->num_philos))
-			return (1);
+		return (1);
 	if (pthread_mutex_lock(philo->right_fork) != 0)
 		return (1);
 	print(philo, "has taken a fork");
@@ -27,7 +27,7 @@ int	take_left_fork(t_philo *philo)
 {
 	if (get_philo_state(philo) == DEAD || (philo->dining_data->num_full_philos
 			== philo->dining_data->num_philos))
-			return (1);
+		return (1);
 	if (pthread_mutex_lock(philo->left_fork) != 0)
 		return (1);
 	print(philo, "has taken a fork");
@@ -61,7 +61,8 @@ int	pick_up_forks(t_philo *philo)
 
 bool	is_philo_full(t_philo *philo)
 {
-	if (philo->num_meals == philo->must_eat && philo->is_full == false)
+	if (philo->num_meals == philo->dining_data->must_eat
+		&& philo->is_full == false)
 	{
 		philo->is_full = true;
 		return (true);

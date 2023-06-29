@@ -78,6 +78,7 @@ void	destroy_mutexes(t_dining *dining)
 	{
 		pthread_mutex_destroy(&dining->forks[i]);
 		pthread_mutex_destroy(&dining->philos[i].mutex_state);
+		pthread_mutex_destroy(&dining->philos[i].mutex_time_last_meal);
 		i++;
 	}
 }
