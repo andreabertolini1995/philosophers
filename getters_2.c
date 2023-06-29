@@ -12,30 +12,42 @@
 
 #include "philo.h"
 
-void	set_philo_state(t_philo *philo, t_state state)
+int	get_time_to_die(t_dining *dining_data)
 {
-	pthread_mutex_lock(&philo->mutex_state);
-	philo->state = state;
-	pthread_mutex_unlock(&philo->mutex_state);
+	int	time_to_die;
+
+	pthread_mutex_lock(&dining_data->mutex_time_to_die);
+	time_to_die = dining_data->time_to_die;
+	pthread_mutex_unlock(&dining_data->mutex_time_to_die);
+	return (time_to_die);
 }
 
-void	set_time_last_meal(t_philo *philo, long int time_last_meal)
+int	get_time_to_eat(t_dining *dining_data)
 {
-	pthread_mutex_lock(&philo->mutex_time_last_meal);
-	philo->time_last_meal = time_last_meal;
-	pthread_mutex_unlock(&philo->mutex_time_last_meal);
+	int	time_to_eat;
+
+	pthread_mutex_lock(&dining_data->mutex_time_to_eat);
+	time_to_eat = dining_data->time_to_eat;
+	pthread_mutex_unlock(&dining_data->mutex_time_to_eat);
+	return (time_to_eat);
 }
 
-void	set_num_meals(t_philo *philo, int num_meals)
+int	get_time_to_sleep(t_dining *dining_data)
 {
+	int	time_to_sleep;
+
+	pthread_mutex_lock(&dining_data->mutex_time_to_sleep);
+	time_to_sleep = dining_data->time_to_sleep;
+	pthread_mutex_unlock(&dining_data->mutex_time_to_sleep);
+	return (time_to_sleep);
+}
+
+int	get_num_meals(t_philo *philo)
+{
+	int	num_meals;
+
 	pthread_mutex_lock(&philo->mutex_num_meals);
-	philo->num_meals = num_meals;
+	num_meals = philo->num_meals;
 	pthread_mutex_unlock(&philo->mutex_num_meals);
-}
-
-void	set_num_full_philos(t_dining *dining_data, int num_full_philos)
-{
-	pthread_mutex_lock(&dining_data->mutex_num_full_philos);
-	dining_data->num_full_philos = num_full_philos;
-	pthread_mutex_unlock(&dining_data->mutex_num_full_philos);
+	return (num_meals);
 }

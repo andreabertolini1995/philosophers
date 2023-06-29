@@ -31,14 +31,15 @@ typedef enum e_philo_state
 typedef struct s_philo
 {
 	int					number;
+	t_state				state;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	int					num_meals;
 	long int			time_last_meal;
 	bool				is_full;
-	t_state				state;
 	pthread_mutex_t		mutex_state;
 	pthread_mutex_t		mutex_time_last_meal;
+	pthread_mutex_t		mutex_num_meals;
 	struct s_dining		*dining_data;
 }	t_philo;
 
@@ -50,12 +51,17 @@ typedef struct s_dining
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				must_eat;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	mutex_print;
+	int				num_full_philos;
 	t_philo			*philos;
 	pthread_t		*philo_threads;
-	int				num_full_philos;
 	pthread_t		monitor_philos;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	mutex_print;
+	pthread_mutex_t	mutex_time_to_die;
+	pthread_mutex_t	mutex_time_to_eat;
+	pthread_mutex_t	mutex_time_to_sleep;
+	pthread_mutex_t	mutex_num_philos;
+	pthread_mutex_t	mutex_num_full_philos;
 }	t_dining;
 
 // Init
@@ -97,9 +103,17 @@ bool			is_philo_full(t_philo *philo);
 void			print(t_philo *philo, char *action);
 t_state			get_philo_state(t_philo *philo);
 long int		get_time_last_meal(t_philo *philo);
+int				get_time_to_die(t_dining *dining_data);
+int				get_time_to_eat(t_dining *dining_data);
+int				get_time_to_sleep(t_dining *dining_data);
+int				get_num_meals(t_philo *philo);
+int				get_num_philos(t_dining *dining_data);
+int				get_num_full_philos(t_dining *dining_data);
 
 // Setters
 void			set_philo_state(t_philo *philo, t_state state);
 void			set_time_last_meal(t_philo *philo, long int time_last_meal);
+void			set_num_meals(t_philo *philo, int num_meals);
+void			set_num_full_philos(t_dining *dining_data, int num_full_philos);
 
 #endif

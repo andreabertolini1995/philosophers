@@ -49,7 +49,7 @@ void	*all_philos_routine(void *arg)
 
 static int	update_philo_index(t_dining *dining, int i)
 {
-	if (i == dining->num_philos - 1)
+	if (i == get_num_philos(dining) - 1)
 		i = 0;
 	else
 		i++;
@@ -61,7 +61,7 @@ static void	notify_all_philos(t_dining *dining)
 	int		i;
 
 	i = 0;
-	while (i < dining->num_philos)
+	while (i < get_num_philos(dining))
 	{
 		dining->philos[i].state = DEAD;
 		i++;
@@ -84,9 +84,9 @@ void	*check_if_philos_are_dead_or_full(void *arg)
 		}
 		else if (is_philo_full(&dining->philos[i]))
 		{
-			dining->num_full_philos++;
-			if (dining->num_full_philos == dining->num_philos
-				&& dining->num_full_philos != 0)
+			set_num_full_philos(dining, get_num_full_philos(dining) + 1);
+			if (get_num_full_philos(dining) == get_num_philos(dining)
+				&& get_num_full_philos(dining) != 0)
 				break ;
 		}
 		i = update_philo_index(dining, i);

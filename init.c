@@ -32,6 +32,7 @@ void	initialize_philos(t_dining *dining, t_philo *philos)
 			philos[i].right_fork = &dining->forks[i - 1];
 		pthread_mutex_init(&philos[i].mutex_state, NULL);
 		pthread_mutex_init(&philos[i].mutex_time_last_meal, NULL);
+		pthread_mutex_init(&philos[i].mutex_num_meals, NULL);
 		philos[i].dining_data = dining;
 		i++;
 	}
@@ -67,6 +68,11 @@ t_dining	*initialize_dining_data(int argc, char **argv)
 	dining->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		dining->must_eat = ft_atoi(argv[5]);
+	pthread_mutex_init(&dining->mutex_time_to_die, NULL);
+	pthread_mutex_init(&dining->mutex_time_to_eat, NULL);
+	pthread_mutex_init(&dining->mutex_time_to_sleep, NULL);
+	pthread_mutex_init(&dining->mutex_num_philos, NULL);
+	pthread_mutex_init(&dining->mutex_num_full_philos, NULL);
 	return (dining);
 }
 

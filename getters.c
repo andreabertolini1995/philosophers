@@ -39,3 +39,23 @@ long int	get_time_last_meal(t_philo *philo)
 	pthread_mutex_unlock(&philo->mutex_time_last_meal);
 	return (time_last_meal);
 }
+
+int	get_num_philos(t_dining *dining_data)
+{
+	int	num_philos;
+
+	pthread_mutex_lock(&dining_data->mutex_num_philos);
+	num_philos = dining_data->num_philos;
+	pthread_mutex_unlock(&dining_data->mutex_num_philos);
+	return (num_philos);
+}
+
+int	get_num_full_philos(t_dining *dining_data)
+{
+	int	num_full_philos;
+
+	pthread_mutex_lock(&dining_data->mutex_num_full_philos);
+	num_full_philos = dining_data->num_full_philos;
+	pthread_mutex_unlock(&dining_data->mutex_num_full_philos);
+	return (num_full_philos);
+}
