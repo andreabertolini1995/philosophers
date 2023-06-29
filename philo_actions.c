@@ -18,8 +18,8 @@ int	philo_eat(t_philo *philo)
 		return (1);
 	print(philo, "is eating");
 	set_philo_state(philo, EATING);
-	usleep(get_time_to_eat(philo->dining_data) * 1000);
 	set_time_last_meal(philo, get_current_time());
+	usleep(get_time_to_eat(philo->dining_data) * 1000);
 	set_num_meals(philo, get_num_meals(philo) + 1);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);

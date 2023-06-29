@@ -15,8 +15,9 @@
 void	print(t_philo *philo, char *action)
 {
 	pthread_mutex_lock(&philo->dining_data->mutex_print);
-	printf("%ld %d %s\n", get_current_time()
-		- philo->dining_data->start_time, philo->number, action);
+	if (get_philo_state(philo) != DEAD)
+		printf("%ld %d %s\n", get_current_time()
+			- philo->dining_data->start_time, philo->number, action);
 	pthread_mutex_unlock(&philo->dining_data->mutex_print);
 }
 

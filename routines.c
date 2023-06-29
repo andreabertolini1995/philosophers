@@ -63,7 +63,7 @@ static void	notify_all_philos(t_dining *dining)
 	i = 0;
 	while (i < get_num_philos(dining))
 	{
-		dining->philos[i].state = DEAD;
+		set_philo_state(&dining->philos[i], DEAD);
 		i++;
 	}
 }
